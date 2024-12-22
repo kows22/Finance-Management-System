@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balances</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li.active,
+        .sidebar ul li:hover {
+            background-color: #1e252f;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h1, h2 {
+            color: #2f3542;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .add-bill-form input,
+        .add-bill-form select,
+        .add-bill-form button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add-bill-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-bill-form button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar ul li {
+                text-align: center;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f4f4f9;
+        }
+
+        .home-container {
+            display: flex;
+            width: 100%;
+        }
+
+
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form input, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #2ecc71;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #27ae60;
+        }
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar ul li {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="home-container">
+  <div class="sidebar">
+    <h2>Welcome!</h2>
+    <ul>
+        <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="/transaction"><i class="fas fa-exchange-alt"></i> Transaction</a></li>
+        <li><a href="/balances"><i class="fas fa-wallet"></i> Balances</a></li>
+        <li><a href="/bills" class="active"><i class="fas fa-file-invoice"></i> Bills</a></li>
+        <li><a href="#"><i class="fas fa-money-bill-wave"></i> Expenses</a></li> <!-- Fixed Expenses icon -->
+        <li><a href="#"><i class="fas fa-bullseye"></i> Goals</a></li>
+    </ul>
+</div>
+  <div class="content">
+        <h1>Your Accounts</h1>
+<table border="2">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Card Number</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in accounts %}
+        <tr>
+            <td>{{ account.name }}</td>
+            <td>{{ account.card_number }}</td>
+            <td>{{ account.balance }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+      <h2>Add Account</h2>
+<form method="POST" action="/add_account">
+    <input type="text" name="name" placeholder="Name" required><br>
+    <input type="text" name="card_number" placeholder="Card Number" required><br>
+    <input type="number" step="0.01" name="balance" placeholder="Initial Balance" required><br>
+    <input type="text" name="expiry_date" placeholder="Expiry Date (MM/YY)" pattern="(0[1-9]|1[0-2])\/\d{2}" title="Enter a valid expiry date in MM/YY format" required><br>
+    <input type="password" name="cvv" placeholder="CVV" maxlength="4" pattern="\d{3,4}" title="CVV must be 3 or 4 digits" required><br>
+    <button type="submit">Add Account</button>
+</form>
+
+</form>
+
+    </div>
+</div>
+</body>
+</html>

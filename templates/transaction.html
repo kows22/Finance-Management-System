@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            background-color: #f4f4f9;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px 15px;
+        }
+
+        .sidebar ul li:hover, .sidebar ul li a.active {
+            background-color: #34495e;
+        }
+
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        form input, form select, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #2ecc71;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #27ae60;
+        }
+
+        form input:focus, form select:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+        }
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar ul li {
+                padding: 12px;
+            }
+        }
+
+    .bill-table th, .bill-table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .bill-table th {
+        background-color: #f2f2f2;
+    }
+
+    .bill-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .bill-table tr:hover {
+        background-color: #f1f1f1;
+    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li.active,
+        .sidebar ul li:hover {
+            background-color: #1e252f;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h1, h2 {
+            color: #2f3542;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .add-bill-form input,
+        .add-bill-form select,
+        .add-bill-form button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add-bill-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-bill-form button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar ul li {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+    <h2>Welcome!</h2>
+    <ul>
+        <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="/transaction" class="active"><i class="fas fa-exchange-alt"></i> Transaction</a></li>
+        <li><a href="/balances"><i class="fas fa-wallet"></i> Balances</a></li>
+        <li><a href="/bills" ><i class="fas fa-file-invoice"></i> Bills</a></li>
+        <li><a href="#"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
+        <li><a href="#"><i class="fas fa-bullseye"></i> Goals</a></li>
+    </ul>
+</div>
+    <div class="content">
+        <h2>List of Transactions</h2>
+        <table>
+            <tr>
+                <th>Account Name</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Date</th>
+            </tr>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.account }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.type }}</td>
+                <td>{{ transaction.category }}</td>
+                <td>{{ transaction.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h1>Add New Transaction</h1>
+<form method="POST" action="/add_transaction">
+    <label for="account">Account:</label>
+    <select id="account" name="account" required>
+        {% for account in accounts %}
+        <option value="{{ account.name }}">{{ account.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" step="0.01" name="amount" placeholder="Enter amount" required>
+
+    <label for="type">Transaction Type:</label>
+    <select id="type" name="type">
+        <option value="Debit">Debit</option>
+        <option value="Credit">Credit</option>
+    </select>
+
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option></option>
+        <option value="Food">Food</option>
+        <option value="Rent">Rent</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Health">Health</option>
+        <option value="Savings">Savings</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required>
+
+    <button type="submit">Add Transaction</button>
+</form>
+
+    </div>
+</body>
+</html>

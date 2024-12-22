@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f9f9f9;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .home-container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li.active,
+        .sidebar ul li:hover {
+            background-color: #1e252f;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px; /* Make space for sidebar */
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .greeting {
+            font-size: 18px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: #2c3e50;
+        }
+
+        .search-bar {
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        #current-date-time {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .header .greeting,
+            .header-right {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 150px;
+            }
+
+            .header .greeting {
+                font-size: 16px;
+            }
+
+            .header-right {
+                flex-direction: column;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+        }
+
+    .bill-table th, .bill-table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .bill-table th {
+        background-color: #f2f2f2;
+    }
+
+    .bill-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .bill-table tr:hover {
+        background-color: #f1f1f1;
+    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li.active,
+        .sidebar ul li:hover {
+            background-color: #1e252f;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h1, h2 {
+            color: #2f3542;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .add-bill-form input,
+        .add-bill-form select,
+        .add-bill-form button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add-bill-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-bill-form button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar ul li {
+                text-align: center;
+            }
+        }
+         .notification {
+            background-color: #ffcccb;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            margin: 10px 0;
+            color: #721c24;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Welcome!</h2>
+            <ul>
+                <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/transaction"><i class="fas fa-exchange-alt"></i> Transaction</a></li>
+                <li><a href="/balances"><i class="fas fa-wallet"></i> Balances</a></li>
+                <li><a href="/bills" class="active"><i class="fas fa-file-invoice"></i> Bills</a></li>
+                <li><a href="#"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
+                <li><a href="#"><i class="fas fa-bullseye"></i> Goals</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="greeting">
+                    <h3>Hi, {{ name }}</h3>
+                    <p id="current-date-time"></p>
+                </div>
+                <div class="header-right">
+                    <button class="notification-btn">🔔</button>
+                    <input type="text" placeholder="Search here" class="search-bar">
+                </div>
+            </div>
+            <div class="content">
+                <h3>Welcome to your Dashboard!</h3>
+
+                <p>Use the navigation menu to explore features like Transactions, Balances, Bills, and more.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Display current date and time
+            const dateTimeElement = document.getElementById("current-date-time");
+
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                dateTimeElement.textContent = now.toLocaleString('en-US', options);
+            }
+
+            // Call the function to update the date and time immediately
+            updateDateTime();
+
+            // Optionally, update the date and time every second
+            setInterval(updateDateTime, 1000);
+        });
+    </script>
+</body>
+</html>
