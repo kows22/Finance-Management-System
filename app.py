@@ -23,8 +23,11 @@ data = {
         {"name": "", "card_number": "", "balance": ""},
     ],
     "transactions": [],
-    "bills":[]
+    "bills": [],
+    "goals": []
 }
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -99,6 +102,7 @@ def signin():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route("/balances")
 def balances():
     return render_template("balances.html", accounts=data["accounts"])
@@ -138,6 +142,7 @@ def add_transaction():
         {"account": account, "amount": amount, "type": t_type, "category": category, "date": date})
     return redirect(url_for("transactions"))
 
+
 @app.route("/bills")
 def bills():
     return render_template("bills.html", bills=data["bills"])
@@ -155,6 +160,63 @@ def add_bill():
     )
 
     return redirect(url_for("bills"))
+
+
+@app.route("/expenses")
+def expenses():
+    try:
+        # Aggregate data for chart and breakdown
+        credit_total = 0
+        debit_total = 0
+        category_totals = {}
+
+        for transaction in data["transactions"]:
+            if transaction["type"] == "Credit":
+                credit_total += transaction["amount"]
+            elif transaction["type"] == "Debit":
+                debit_total += transaction["amount"]
+                category_totals[transaction["category"]] = (
+                        category_totals.get(transaction["category"], 0) + transaction["amount"]
+                )
+
+        # Render the expense management page
+        return render_template(
+            "expenses.html",
+            credit_total=credit_total,
+            debit_total=debit_total,
+            category_totals=category_totals,
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Goals Management
+@app.route("/goals")
+def goals():
+    return render_template("goals.html", goals=data["goals"], accounts=data["accounts"])
+
+
+@app.route("/add_goal", methods=["POST"])
+def add_goal():
+    name = request.form["name"]
+    target = float(request.form["target"])
+
+    # Check if balance is sufficient to achieve the goal
+    sufficient_balance = False
+    for account in data["accounts"]:
+        if account["balance"] >= target:
+            account["balance"] -= target
+            sufficient_balance = True
+            break
+
+    if sufficient_balance:
+        data["goals"].append({"name": name, "target": target, "status": "Achieved"})
+        flash(f"Goal '{name}' achieved successfully!", "success")
+    else:
+        flash(f"Insufficient balance to achieve the goal '{name}'.", "error")
+
+    return redirect(url_for("goals"))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
