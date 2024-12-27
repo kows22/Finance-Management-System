@@ -122,7 +122,7 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-        /* Responsive Design */
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -142,13 +142,6 @@
             .sidebar ul li {
                 text-align: center;
             }
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            background-color: #f4f4f9;
         }
 
         .home-container {
@@ -206,7 +199,6 @@
             background-color: #27ae60;
         }
 
-        /* Responsive for smaller screens */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -247,55 +239,50 @@
                 <li><a href="/bills" class="active"><i class="fas fa-file-invoice"></i> Bills</a></li>
                 <li><a href="/expenses"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
                 <li><a href="/goals"><i class="fas fa-bullseye"></i> Goals</a></li>
-            </ul>
-</div>
-  <div class="content">
-        <h1>Your Accounts</h1>
-<table border="2">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Card Number</th>
-            <th>Balance</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for account in accounts %}
-        <tr>
-            <td>{{ account.name }}</td>
-            <td>{{ account.card_number }}</td>
-            <td>{{ account.balance }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-      <h2>Add Account</h2>
-<form method="POST" action="/add_account">
-    <input type="text" name="name" placeholder="Name" required><br>
-    <input type="text" name="card_number" placeholder="Card Number" required><br>
-    <input type="number" step="0.01" name="balance" placeholder="Initial Balance" required><br>
-    <input type="text" name="expiry_date" placeholder="Expiry Date (MM/YY)" pattern="(0[1-9]|1[0-2])\/\d{2}" title="Enter a valid expiry date in MM/YY format" required><br>
-    <input type="password" name="cvv" placeholder="CVV" maxlength="4" pattern="\d{3,4}" title="CVV must be 3 or 4 digits" required><br>
-    <button type="submit">Add Account</button>
-</form>
-
-</form>
-
+    </ul>
     </div>
+      <div class="content">
+            <h1>Your Accounts</h1>
+            <table border="2">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Card Number</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.name }}</td>
+                        <td>{{ account.card_number }}</td>
+                        <td>{{ account.balance }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>Add Account</h2>
+                <form method="POST" action="/add_account">
+                    <input type="text" name="name" placeholder="Name" required><br>
+                    <input type="text" name="card_number" placeholder="Card Number" required><br>
+                    <input type="number" step="0.01" name="balance" placeholder="Initial Balance" required><br>
+                    <input type="text" name="expiry_date" placeholder="Expiry Date (MM/YY)" pattern="(0[1-9]|1[0-2])\/\d{2}" title="Enter a valid expiry date in MM/YY format" required><br>
+                    <input type="password" name="cvv" placeholder="CVV" maxlength="4" pattern="\d{3,4}" title="CVV must be 3 or 4 digits" required><br>
+                    <button type="submit">Add Account</button>
+                </form>
+      </div>
 </div>
     <script>
         const rows = document.querySelectorAll("table tbody tr");
         let totalBalance = 0;
 
         rows.forEach((row) => {
-        const balanceCell = row.querySelector("td:nth-child(3)"); // 3rd column for balance
+        const balanceCell = row.querySelector("td:nth-child(3)");
         const balance = parseFloat(balanceCell.textContent || 0);
         totalBalance += balance;
-    });
-     // Store the computed total balance in localStorage
-    localStorage.setItem('totalBalance', totalBalance);
-
-
-</script>
+        });
+         // Store the computed total balance in localStorage
+        localStorage.setItem('totalBalance', totalBalance);
+    </script>
 </body>
 </html>

@@ -82,100 +82,75 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
+
         table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-}
-
-table,
-th,
-td {
-    border: 1px solid #ddd;
-}
-
-th,
-td {
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #34495e;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-        .paid {
-            color: #28a745;
-            font-weight: bold;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
         }
 
-        .unpaid {
-            color: #dc3545;
-            font-weight: bold;
+        table, th, td {
+            border: 1px solid #ddd;
         }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
         form {
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #34495e;
-}
-
-form input,
-form select,
-form button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-form button {
-    background-color: #2ecc71;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-form button:hover {
-    background-color: #27ae60;
-}
-
-form input:focus,
-form select:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
-}
-        .bill-item {
-            background-color: #ffffff;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s ease;
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .bill-item:hover {
-            transform: scale(1.02);
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        form input,
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #2ecc71;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #27ae60;
+        }
+
+        form input:focus,
+        form select:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
         }
 
         .notification-button {
@@ -229,7 +204,6 @@ form select:focus {
             border-bottom: none;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -268,7 +242,6 @@ form select:focus {
                 <li><a href="/goals"><i class="fas fa-bullseye"></i> Goals</a></li>
     </ul>
 </div>
-
     <div class="content">
         <h1>Your Bills</h1>
         <table border="1" class="bill-table">
@@ -290,7 +263,7 @@ form select:focus {
             </tr>
             {% endfor %}
         </tbody>
-    </table><br>
+        </table><br>
         <h2>Add Bill</h2>
         <form method="POST" action="/add_bill" class="add-bill-form">
             <input type="text" name="name" placeholder="Bill Name" required>
@@ -304,55 +277,54 @@ form select:focus {
         </form>
     </div>
     <script>
-       document.addEventListener("DOMContentLoaded", () => {
-    // Convert server-side data to JavaScript arrays
-    const bills = {{ bills | tojson }};
-    const notifications = {{ notifications | tojson }};
+        document.addEventListener("DOMContentLoaded", () => {
+        // Convert server-side data to JavaScript arrays
+        const bills = {{ bills | tojson }};
+        const notifications = {{ notifications | tojson }};
 
-    const notificationContainer = document.getElementById("notification-container");
-    const notificationsList = document.getElementById("notificationsList");
+        const notificationContainer = document.getElementById("notification-container");
+        const notificationsList = document.getElementById("notificationsList");
 
-    // Utility function to format dates without time
-    function formatDateWithoutTime(dateString) {
-        const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-    }
+        // Utility function to format dates without time
+        function formatDateWithoutTime(dateString) {
+            const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
 
-    // Display server-side notifications
-    if (notifications.length > 0) {
-        notificationContainer.style.display = "block";
-        notifications.forEach(note => {
+        // Display server-side notifications
+        if (notifications.length > 0) {
+            notificationContainer.style.display = "block";
+            notifications.forEach(note => {
+                const li = document.createElement("li");
+                li.textContent = `${note.name} is due on ${formatDateWithoutTime(note.due_date)}`;
+                notificationsList.appendChild(li);
+            });
+        }
+
+        // Client-side filtering for additional notifications (if needed)
+        const today = new Date();
+        const upcomingDays = 7;
+
+        const clientNotifications = bills
+            .filter(bill => {
+                const dueDate = new Date(bill.due_date);
+                const daysDifference = (dueDate - today) / (1000 * 60 * 60 * 24);
+                return bill.status === "Unpaid" && daysDifference >= 0 && daysDifference <= upcomingDays;
+            })
+            .map(bill => `${bill.name} is due on ${formatDateWithoutTime(bill.due_date)}`);
+
+        // Add client-side notifications to the list
+        clientNotifications.forEach(note => {
             const li = document.createElement("li");
-            li.textContent = `${note.name} is due on ${formatDateWithoutTime(note.due_date)}`;
+            li.textContent = note;
             notificationsList.appendChild(li);
         });
-    }
 
-    // Client-side filtering for additional notifications (if needed)
-    const today = new Date();
-    const upcomingDays = 7;
-
-    const clientNotifications = bills
-        .filter(bill => {
-            const dueDate = new Date(bill.due_date);
-            const daysDifference = (dueDate - today) / (1000 * 60 * 60 * 24);
-            return bill.status === "Unpaid" && daysDifference >= 0 && daysDifference <= upcomingDays;
-        })
-        .map(bill => `${bill.name} is due on ${formatDateWithoutTime(bill.due_date)}`);
-
-    // Add client-side notifications to the list
-    clientNotifications.forEach(note => {
-        const li = document.createElement("li");
-        li.textContent = note;
-        notificationsList.appendChild(li);
+        // Show container if client-side notifications are added
+        if (clientNotifications.length > 0 && notificationContainer.style.display === "none") {
+            notificationContainer.style.display = "block";
+        }
     });
-
-    // Show container if client-side notifications are added
-    if (clientNotifications.length > 0 && notificationContainer.style.display === "none") {
-        notificationContainer.style.display = "block";
-    }
-});
-
-</script>
+    </script>
 </body>
 </html>

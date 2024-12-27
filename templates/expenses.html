@@ -6,178 +6,165 @@
     <title>Expense Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f6f9;
-        color: #2f3542;
-    }
+    <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #2f3542;
+        }
 
-    h1, h2 {
-        color: #34495e;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+        h1, h2 {
+            color: #34495e;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    h1 {
-        font-size: 2rem;
-        margin-top: 20px;
-    }
+        h1 {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
 
-    h2 {
-        font-size: 1.5rem;
-    }
+        h2 {
+            font-size: 1.5rem;
+        }
 
-    /* Sidebar styling */
-    .sidebar {
-        width: 250px;
-        background-color: #2f3542;
-        color: white;
-        padding: 20px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
-
-    .sidebar h2 {
-        text-align: center;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        color: #ecf0f1;
-    }
-
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar ul li {
-        margin: 15px 0;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .sidebar ul li.active,
-    .sidebar ul li:hover {
-        background-color: #1e252f;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: white;
-        display: block;
-        padding: 12px 20px;
-        font-size: 16px;
-    }
-
-    .sidebar ul li a i {
-        margin-right: 10px;
-    }
-
-    /* Content styling */
-    .content {
-        margin-left: 270px; /* Adjust to match sidebar width */
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Center-align content */
-    }
-
-    #expenseChart {
-        max-width: 600px;
-        margin: 20px auto;
-        background-color: #ffffff;
-        border: 1px solid #dcdcdc;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    /* Table styling */
-    table {
-        width: 50%;
-        max-width: 800px;
-        margin: 20px auto;
-        border-collapse: collapse;
-        background-color: #ffffff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    table thead {
-        background-color: #34495e;
-        color: white;
-    }
-
-    table thead th {
-        padding: 10px 20px;
-        text-align: center;
-    }
-
-    table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    table tbody tr:nth-child(odd) {
-        background-color: #ffffff;
-    }
-
-    table tbody td {
-        padding: 10px 20px;
-        text-align: center;
-    }
-
-    table tbody td:first-child {
-        font-weight: bold;
-        text-align: center;
-    }
-
-    table tbody td:last-child {
-        text-align: center;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
         .sidebar {
-            width: 200px;
-            font-size: 14px;
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
-        .content {
-            margin-left: 220px;
-            padding: 10px;
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
         }
 
-        table {
-            width: 95%;
-            font-size: 14px;
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li.active,
+        .sidebar ul li:hover {
+            background-color: #1e252f;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
         }
 
         #expenseChart {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .sidebar {
-            position: relative;
-            width: 100%;
-            height: auto;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            padding: 10px;
+            border-radius: 5px;
         }
 
-        .content {
-            margin-left: 0;
+        table {
+            width: 50%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
         }
-    }
-</style>
 
+        table thead {
+            background-color: #34495e;
+            color: white;
+        }
+
+        table thead th {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        table tbody td {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        table tbody td:first-child {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table tbody td:last-child {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                font-size: 14px;
+            }
+
+            .content {
+                margin-left: 220px;
+                padding: 10px;
+            }
+
+            table {
+                width: 95%;
+                font-size: 14px;
+            }
+
+            #expenseChart {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="sidebar">
+    <div class="sidebar">
             <h2>Welcome!</h2>
             <ul>
                 <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -187,12 +174,10 @@
                 <li><a href="/expenses"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
                 <li><a href="/goals"><i class="fas fa-bullseye"></i> Goals</a></li>
             </ul>
-        </div>
+    </div>
     <h1>Expense Management</h1>
-
     <h2>Credits vs Debits</h2>
     <canvas id="expenseChart" width="400" height="200"></canvas>
-
     <h2>Expense Breakdown by Category</h2>
     <table border="1">
         <thead>
@@ -202,17 +187,16 @@
             </tr>
         </thead>
         <tbody>
-        {% for category in category_totals %}
-        <tr>
-            <td>{{ category.category }}</td>
-            <td>{{ category.total }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+            {% for category in category_totals %}
+            <tr>
+                <td>{{ category.category }}</td>
+                <td>{{ category.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <script>
-        // Render the bar chart
         const ctx = document.getElementById('expenseChart').getContext('2d');
         const expenseChart = new Chart(ctx, {
             type: 'bar',

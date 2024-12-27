@@ -6,194 +6,184 @@
     <title>Transactions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Base styles for the body */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    background-color: #f4f4f9;
-    height: 100vh;
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            background-color: #f4f4f9;
+            height: 100vh;
+        }
 
-}
+        .sidebar {
+            width: 250px;
+            background-color: #2f3542;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
 
-/* Sidebar styles */
-.sidebar {
-    width: 250px;
-    background-color: #2f3542;
-    color: white;
-    padding: 20px;
-    height: 100vh; /* Fixed height for the sidebar */
-    position: fixed;
-    overflow-y: auto; /* Enable scrolling within the sidebar */
-}
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
 
-.sidebar h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #ecf0f1;
-}
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
 
-.sidebar ul li {
-    margin: 15px 0;
-    cursor: pointer;
-    border-radius: 5px;
-    overflow: hidden;
-    transition: background-color 0.3s ease;
-}
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
 
-.sidebar ul li a {
-    text-decoration: none;
-    color: white;
-    display: block;
-    padding: 10px 15px;
-    font-size: 16px;
-}
+        .sidebar ul li:hover,
+        .sidebar ul li a.active {
+            background-color: #1e252f;
+        }
 
-.sidebar ul li:hover,
-.sidebar ul li a.active {
-    background-color: #1e252f;
-}
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 60px;
+            height: 100vh;
+            overflow-y: auto;
+        }
 
-/* Content area */
-.content {
-    margin-left: 250px; /* Offset for the fixed sidebar */
-    width: calc(100% - 250px);
-    padding: 60px;
-    height: 100vh;
-    overflow-y: auto; /* Enable scrolling within the content */
-}
+        .content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
 
-.content h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    color: #34495e;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
 
-/* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-}
+        table, th, td {
+            border: 1px solid #ddd;
+        }
 
-table,
-th,
-td {
-    border: 1px solid #ddd;
-}
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
 
-th,
-td {
-    padding: 10px;
-    text-align: left;
-}
+        th {
+            background-color: #34495e;
+            color: white;
+        }
 
-th {
-    background-color: #34495e;
-    color: white;
-}
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+        form {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-/* Form styling */
-form {
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
 
-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #34495e;
-}
+        form input,
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-form input,
-form select,
-form button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
+        form button {
+            background-color: #2ecc71;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-form button {
-    background-color: #2ecc71;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        form button:hover {
+            background-color: #27ae60;
+        }
 
-form button:hover {
-    background-color: #27ae60;
-}
+        form input:focus,
+        form select:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+        }
 
-form input:focus,
-form select:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
-}
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-    }
+            .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+        }
 
-    .content {
-        margin-left: 200px;
-        width: calc(100% - 200px);
-    }
-}
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
 
-@media (max-width: 480px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
 
-    .content {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .sidebar ul li {
-        padding: 12px;
-    }
-}
+            .sidebar ul li {
+                padding: 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
     <h2>Welcome!</h2>
-    <ul>
-                <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="/transaction"><i class="fas fa-exchange-alt"></i> Transaction</a></li>
-                <li><a href="/balances"><i class="fas fa-wallet"></i> Balances</a></li>
-                <li><a href="/bills" ><i class="fas fa-file-invoice"></i> Bills</a></li>
-                <li><a href="/expenses"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
-                <li><a href="/goals"><i class="fas fa-bullseye"></i> Goals</a></li>
-            </ul>
-</div>
+        <ul>
+                    <li id="dashboard-item"><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/transaction"><i class="fas fa-exchange-alt"></i> Transaction</a></li>
+                    <li><a href="/balances"><i class="fas fa-wallet"></i> Balances</a></li>
+                    <li><a href="/bills" ><i class="fas fa-file-invoice"></i> Bills</a></li>
+                    <li><a href="/expenses"><i class="fas fa-money-bill-wave"></i> Expenses</a></li>
+                    <li><a href="/goals"><i class="fas fa-bullseye"></i> Goals</a></li>
+        </ul>
+    </div>
     <div class="content">
         <h2>List of Transactions</h2>
         <table border="1">
@@ -217,56 +207,50 @@ form select:focus {
             {% endfor %}
         </table>
         <h1>Add New Transaction</h1>
-<form action="/add_transaction" method="POST">
-    <label for="account">Account:</label>
-    <select id="account" name="account_id" required> <!-- Corrected from 'account' -->
-            {% for account in accounts %}
-            <option value="{{ account.id }}">{{ account.name }}</option> <!-- Corrected account reference -->
-            {% endfor %}
-        </select>
+        <form action="/add_transaction" method="POST">
+            <label for="account">Account:</label>
+            <select id="account" name="account_id" required> <!-- Corrected from 'account' -->
+                    {% for account in accounts %}
+                    <option value="{{ account.id }}">{{ account.name }}</option> <!-- Corrected account reference -->
+                    {% endfor %}
+            </select>
 
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" step="0.01" name="amount" placeholder="Enter amount" required>
-
-    <label for="type">Transaction Type:</label>
-    <select id="type" name="type">
-        <option value="Debit">Debit</option>
-        <option value="Credit">Credit</option>
-    </select>
-
-    <label for="category">Category:</label>
-    <select id="category" name="category" required>
-        <option></option>
-        <option value="Food">Food</option>
-        <option value="Rent">Rent</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Transportation">Transportation</option>
-        <option value="Health">Health</option>
-        <option value="Savings">Savings</option>
-        <option value="Other">Other</option>
-    </select>
-
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required>
-
-    <button type="submit">Add Transaction</button>
-</form>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" step="0.01" name="amount" placeholder="Enter amount" required>
+            <label for="type">Transaction Type:</label>
+            <select id="type" name="type">
+                <option value="Debit">Debit</option>
+                <option value="Credit">Credit</option>
+            </select>
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option></option>
+                <option value="Food">Food</option>
+                <option value="Rent">Rent</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Health">Health</option>
+                <option value="Savings">Savings</option>
+                <option value="Other">Other</option>
+            </select>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <button type="submit">Add Transaction</button>
+        </form>
     </div>
     <script>
         const form = document.querySelector("#transactionForm");
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the form from submitting the usual way
+        form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-        // Collect the form data
         const account_id = document.querySelector('#account').value;
         const amount = document.querySelector('#amount').value;
         const type = document.querySelector('#type').value;
         const category = document.querySelector('#category').value;
         const date = document.querySelector('#date').value;
 
-        // Create a new transaction object
         const newTransaction = {
             account_id,
             amount,
@@ -275,97 +259,78 @@ form select:focus {
             date
         };
 
-        // Add the new transaction to the table dynamically
         const table = document.querySelector("#transactionsTable tbody");
         const newRow = table.insertRow();
 
-        newRow.innerHTML = `
-            <td>${account_id}</td>
-            <td>${amount}</td>
-            <td>${type}</td>
-            <td>${category}</td>
-            <td>${date}</td>
-        `;
+            newRow.innerHTML = `
+                <td>${account_id}</td>
+                <td>${amount}</td>
+                <td>${type}</td>
+                <td>${category}</td>
+                <td>${date}</td>
+            `;
 
-        // Optionally, reset the form
-        form.reset();
+            form.reset();
+            saveTransaction(newTransaction);
+        });
 
-        // Optionally, you can store the transaction in localStorage or send it to the server
-        saveTransaction(newTransaction);
-    });
+        function saveTransaction(transaction) {
+            const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+            transactions.push(transaction);
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+        }
 
-    // Function to save transaction to localStorage
-    function saveTransaction(transaction) {
-        const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-        transactions.push(transaction);
-        localStorage.setItem("transactions", JSON.stringify(transactions));
-    }
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting the usual way
-
-        // Collect the form data
         const account_id = document.querySelector('#account').value;
         const amount = document.querySelector('#amount').value;
         const type = document.querySelector('#type').value;
         const category = document.querySelector('#category').value;
         const date = document.querySelector('#date').value;
 
-        // Create a new transaction object
-        const newTransaction = {
-            account_id,
-            amount,
-            type,
-            category,
-            date
-        };
+            const newTransaction = {
+                account_id,
+                amount,
+                type,
+                category,
+                date
+            };
 
-        // Save the new transaction to localStorage
-        saveTransaction(newTransaction);
+            saveTransaction(newTransaction);
+            alert("Transaction saved!");
+            form.reset();
+        });
 
-        // Optionally, you can update the UI here or reset the form
-        alert("Transaction saved!");
-        form.reset(); // Reset the form fields
-    });
-
-    // Save transaction to localStorage
-    function saveTransaction(transaction) {
-        // Get the existing transactions from localStorage, or initialize an empty array if none exist
-        const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
-        // Add the new transaction to the array
-        transactions.push(transaction);
-
-        // Store the updated transactions array back in localStorage
-        localStorage.setItem("transactions", JSON.stringify(transactions));
-    }
-
-    // Extract transaction data from the table
-    const rows = document.querySelectorAll("table tbody tr");
-    const transactions = [];
-
-    rows.forEach((row) => {
-        const account_name = row.querySelector("td:nth-child(1)")?.textContent.trim(); // Account Name
-        const amount = row.querySelector("td:nth-child(2)")?.textContent.trim(); // Amount
-        const type = row.querySelector("td:nth-child(3)")?.textContent.trim(); // Type
-        const category = row.querySelector("td:nth-child(4)")?.textContent.trim(); // Category
-        const date = row.querySelector("td:nth-child(5)")?.textContent.trim(); // Date
-
-        if (account_name && amount && type && category && date) {
-            transactions.push({ account_name, amount, type, category, date });
+        function saveTransaction(transaction) {
+            const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+            transactions.push(transaction);
+            localStorage.setItem("transactions", JSON.stringify(transactions));
         }
-    });
 
-    if (transactions.length > 0) {
-        localStorage.setItem("recentTransactions", JSON.stringify(transactions));
-    }
+        const rows = document.querySelectorAll("table tbody tr");
+        const transactions = [];
 
-    // Log if there are no transactions
-    if (transactions.length === 0) {
-        console.log("No transactions found.");
-    }
-</script>
+        rows.forEach((row) => {
+            const account_name = row.querySelector("td:nth-child(1)")?.textContent.trim(); // Account Name
+            const amount = row.querySelector("td:nth-child(2)")?.textContent.trim(); // Amount
+            const type = row.querySelector("td:nth-child(3)")?.textContent.trim(); // Type
+            const category = row.querySelector("td:nth-child(4)")?.textContent.trim(); // Category
+            const date = row.querySelector("td:nth-child(5)")?.textContent.trim(); // Date
+
+            if (account_name && amount && type && category && date) {
+                transactions.push({ account_name, amount, type, category, date });
+            }
+        });
+
+        if (transactions.length > 0) {
+            localStorage.setItem("recentTransactions", JSON.stringify(transactions));
+        }
+
+        if (transactions.length === 0) {
+            console.log("No transactions found.");
+        }
+    </script>
 </body>
 </html>

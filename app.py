@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, jsonify, session, flash, url_for
 from flask_mysqldb import MySQL
 from datetime import datetime,timedelta
+import mysql.connector
 import bcrypt
 import os
-import mysql.connector
 
 
 app = Flask(__name__)
@@ -17,9 +17,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-# Secret key for session management
 app.secret_key = os.urandom(24)
-
 data = {
     "accounts": [
         {"name": "", "card_number": "", "balance": ""},
@@ -37,7 +35,6 @@ def index():
 @app.route('/home')
 def home():
     try:
-        # Check if user is logged in
         if 'user_id' not in session:
             return redirect('/')
 
@@ -45,10 +42,8 @@ def home():
         name = session.get('name', 'User')  # Get user's name from session
         current_date = datetime.now().strftime("%B %d, %Y")
 
-        # Create a cursor
         cur = mysql.connection.cursor()
 
-        # Fetch expense data for the chart
         cur.execute("""
                     SELECT category, SUM(amount) as total 
                     FROM transactions 
@@ -57,7 +52,6 @@ def home():
                 """, (user_id,))
         expense_data = cur.fetchall()
 
-        # Fetch the last 5 transactions for recent transactions
         cur.execute("""
                     SELECT date, category, amount, type 
                     FROM transactions 
@@ -67,7 +61,6 @@ def home():
                 """, (user_id,))
         recent_transactions = cur.fetchall()
 
-        # Fetch upcoming bills
         today = datetime.now().date()
         upcoming_days = 7
         cur.execute("""
@@ -80,7 +73,6 @@ def home():
                 """, (user_id, today, today + timedelta(days=upcoming_days)))
         upcoming_bills = cur.fetchall()
 
-        # Fetch achieved goals
         cur.execute("""
                     SELECT goal_name 
                     FROM goals 
@@ -88,10 +80,7 @@ def home():
                 """, (user_id,))
         achieved_goals = [row['goal_name'] for row in cur.fetchall()]
 
-        # Close the cursor
         cur.close()
-
-        # Format data for the chart
         categories = [row['category'] for row in expense_data]
         amounts = [float(row['total']) for row in expense_data]
 
@@ -101,14 +90,13 @@ def home():
             current_date=current_date,
             categories=categories,
             amounts=amounts,
-            recent_transactions=recent_transactions,  # Pass the transactions to the template
-            upcoming_bills=upcoming_bills,  # Pass the upcoming bills to the template
-            achieved_goals=achieved_goals  # Pass the achieved goals to the template
+            recent_transactions=recent_transactions,
+            upcoming_bills=upcoming_bills,
+            achieved_goals=achieved_goals
         )
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -117,10 +105,8 @@ def signup():
         email = request.form['email']
         password = request.form['password']
 
-        # Hash the password
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        # Insert user into the database
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)",
                     (name, email, hashed_password))
@@ -129,9 +115,9 @@ def signup():
 
         flash('Sign Up Successful! Please log in.', 'success')
         return redirect('/')
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 @app.route('/signin', methods=['POST'])
 def signin():
@@ -139,7 +125,6 @@ def signin():
         email = request.form['email']
         password = request.form['password']
 
-        # Check user in the database
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
@@ -153,19 +138,20 @@ def signin():
         else:
             flash('Invalid email or password!', 'error')
             return redirect('/')
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 @app.route("/balances")
 def balances():
     try:
-        # Fetch accounts from the database
         user_id = session['user_id']
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM accounts WHERE user_id = %s", (user_id,))
         accounts = cur.fetchall()
         cur.close()
         return render_template("balances.html", accounts=accounts)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -177,7 +163,6 @@ def add_account():
         card_number = request.form["card_number"]
         balance = float(request.form["balance"])
 
-        # Insert account into the database
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO accounts (user_id, name, card_number, balance) VALUES (%s, %s, %s, %s)",
@@ -188,6 +173,7 @@ def add_account():
 
         flash("Account added successfully!", "success")
         return redirect(url_for("balances"))
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -197,13 +183,11 @@ def transactions():
         user_id = session['user_id']
         cur = mysql.connection.cursor()
 
-        # Fetch account names for the user
         cur.execute("""
             SELECT id, name FROM accounts WHERE user_id = %s
         """, (user_id,))
         accounts = cur.fetchall()
 
-        # Fetch transactions for the user
         cur.execute("""
             SELECT t.*, a.name as account_name 
             FROM transactions t 
@@ -213,8 +197,8 @@ def transactions():
         transactions = cur.fetchall()
 
         cur.close()
-
         return render_template("transaction.html", transactions=transactions, accounts=accounts)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -228,23 +212,17 @@ def add_transaction():
         category = request.form.get("category")
         date = request.form.get("date")
 
-        # Debugging: Print the received form data
         print(f"Account ID: {account_id}, Amount: {amount}, Type: {t_type}, Category: {category}, Date: {date}")
-
-        # Ensure all required form fields are present
         if not account_id or not amount or not t_type or not category or not date:
             raise ValueError("Missing required form fields")
 
-        amount = float(amount)  # Convert amount to float
-
-        # Update the account balance
+        amount = float(amount)
         cur = mysql.connection.cursor()
         if t_type == "Debit":
             cur.execute("UPDATE accounts SET balance = balance - %s WHERE id = %s", (amount, account_id))
         else:
             cur.execute("UPDATE accounts SET balance = balance + %s WHERE id = %s", (amount, account_id))
 
-        # Insert transaction into the database
         cur.execute(
             "INSERT INTO transactions (account_id, amount, type, category, date, user_id) VALUES (%s, %s, %s, %s, %s, %s)",
             (account_id, amount, t_type, category, date, user_id)
@@ -257,6 +235,7 @@ def add_transaction():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 def get_upcoming_notifications(user_id):
     upcoming_days = 7
     try:
@@ -268,6 +247,7 @@ def get_upcoming_notifications(user_id):
             """, (user_id, upcoming_days))
             notifications = cur.fetchall()
         return notifications
+
     except Exception as e:
         print(f"Error fetching notifications: {e}")
         return []
@@ -289,7 +269,6 @@ def bills():
             bills = cur.fetchall()
 
         notifications = get_upcoming_notifications(user_id)
-
         return render_template('bills.html', bills=bills, notifications=notifications)
 
     except Exception as e:
@@ -341,14 +320,12 @@ def update_bill_status():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
 @app.route("/expenses")
 def expenses():
     try:
         user_id = session['user_id']
         cur = mysql.connection.cursor()
 
-        # Query to calculate total credits and debits
         cur.execute("""
             SELECT SUM(amount) AS total, type 
             FROM transactions 
@@ -366,7 +343,6 @@ def expenses():
             elif total['type'] == 'Debit':
                 debit_total = total['total']
 
-        # Query to calculate expenses by category
         cur.execute("""
             SELECT category, SUM(amount) AS total 
             FROM transactions 
@@ -376,8 +352,6 @@ def expenses():
         category_totals = cur.fetchall()
 
         cur.close()
-
-        # Pass the calculated totals to the template
         return render_template("expenses.html", credit_total=credit_total, debit_total=debit_total,
                                category_totals=category_totals)
 
@@ -389,13 +363,10 @@ def expenses():
 def goals():
     cursor = mysql.connection.cursor()
 
-    # Check if user is logged in (using session)
     if 'user_id' not in session:
         return redirect('/')
 
-    user_id = session['user_id']  # Get the logged-in user's ID
-
-    # Calculate the total balance from the accounts table for the logged-in user
+    user_id = session['user_id']
     cursor.execute("SELECT SUM(balance) AS total_balance FROM accounts WHERE user_id = %s", (user_id,))
     result = cursor.fetchone()
     total_balance = result['total_balance'] if result and result['total_balance'] is not None else 0
@@ -403,39 +374,29 @@ def goals():
     if request.method == 'POST':
         goal_name = request.form['goal_name']
         target_amount = float(request.form['target_amount'])
-
-        # Set goal status based on the total balance
         status = 'Achieved' if total_balance >= target_amount else 'Pending'
 
-        # Insert the new goal into the database for the logged-in user
         cursor.execute("""
             INSERT INTO goals (user_id, goal_name, target_amount, status) 
             VALUES (%s, %s, %s, %s)
         """, (user_id, goal_name, target_amount, status))
         mysql.connection.commit()
 
-    # Fetch all goals for the logged-in user and update their status dynamically
     cursor.execute("SELECT id, goal_name, target_amount, status FROM goals WHERE user_id = %s", (user_id,))
     goals = cursor.fetchall()
     achieved_goals = []
 
     for goal in goals:
-        # Dynamically update the status based on the user's total balance
         current_status = 'Achieved' if total_balance >= goal['target_amount'] else 'Pending'
-
-        # Collect achieved goals for notifications
         if current_status == 'Achieved':
             achieved_goals.append(goal['goal_name'])
 
-        # Optionally update the goal status in the database
         cursor.execute("UPDATE goals SET status = %s WHERE id = %s", (current_status, goal['id']))
 
     mysql.connection.commit()
     cursor.close()
 
-    # Pass the goals and the achieved goals (for notifications) to the template
     return render_template('goals.html', goals=goals, notifications=achieved_goals)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

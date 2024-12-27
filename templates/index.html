@@ -12,7 +12,6 @@
         <button onclick="showForm('signup-form')">Sign Up</button>
         <button onclick="showForm('signin-form')">Sign In</button>
 
-        <!-- Sign Up Form -->
         <div id="signup-form" class="form-box">
             <h2>Sign Up</h2>
             <form action="/signup" method="POST">
@@ -23,7 +22,6 @@
             </form>
         </div>
 
-        <!-- Sign In Form -->
         <div id="signin-form" class="form-box" onsubmit="return validateForm()">
             <h2>Sign In</h2>
             <form action="/signin" method="POST">
@@ -33,10 +31,8 @@
             </form>
         </div>
     </div>
-
     <script>
         function validateForm() {
-        // Validate email
         const email = document.getElementById('email').value;
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!email.match(emailRegex)) {
@@ -44,18 +40,16 @@
             return false;
         }
 
-        // Validate password
         const password = document.getElementById('password').value;
         if (password.length < 8) {
             alert('Password must be at least 8 characters long.');
             return false;
         }
 
-        // If both are valid
         return true;
-    }
+        }
+
         function showForm(formId) {
-            // Hide all forms
             const forms = document.querySelectorAll('.form-box');
             forms.forEach(form => form.classList.remove('visible'));
 
@@ -64,7 +58,7 @@
             selectedForm.classList.add('visible');
         }
         async function submitCardForm(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
+            event.preventDefault();
 
             const form = document.getElementById('payment-card-form');
             const formData = new FormData(form);
