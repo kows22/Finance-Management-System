@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -95,15 +96,6 @@
             align-items: center;
         }
 
-        .notification-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            margin-right: 15px;
-            color: #2c3e50;
-        }
-
         .search-bar {
             padding: 8px 10px;
             font-size: 14px;
@@ -111,38 +103,62 @@
             border-radius: 4px;
             width: 200px;
         }
-
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .dashboard-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: white;
-        }
-        .dashboard-card h3 {
-            font-size: 1.5rem;
-            color: #34495e;
-            margin-bottom: 10px;
-        }
-        .dashboard-card table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .dashboard-card th, .dashboard-card td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        .dashboard-card th {
-            background-color: #34495e;
-            color: white;
-        }
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Standard responsive layout */
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    height: auto;
+}
+
+.dashboard-card h3 {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.dashboard-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.dashboard-card th,
+.dashboard-card td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.dashboard-card th {
+    background-color: #34495e;
+    color: white;
+}
+
+/* Horizontal Card Styling */
+.horizontal-card {
+    grid-column: span 2; /* Make it span two columns */
+    display: flex;
+    flex-direction: column; /* Allows vertical stacking */
+    align-items: center;
+}
+
+.horizontal-card table {
+    width: 90%; /* Reduce width for better horizontal alignment */
+    margin: 0 auto;
+}
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .sidebar {
@@ -183,6 +199,153 @@
                 width: 100%;
             }
         }
+        #expenseChart {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .upcoming-bills {
+            background-color: #ffebcc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+        }
+
+        .upcoming-bills h2 {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        .upcoming-bills ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .upcoming-bills ul li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .upcoming-bills ul li:last-child {
+            border-bottom: none;
+        }
+        .notification-button {
+            position: relative;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .notification-button:hover {
+            background-color: #0056b3;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+
+        #notification-container {
+            display: none;
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #notificationsList {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #notificationsList li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #notificationsList li:last-child {
+            border-bottom: none;
+        }
+        .card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .card h2 {
+        margin: 0 0 10px;
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    .card ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .card li {
+        margin-bottom: 10px;
+        font-size: 1em;
+        color: #555;
+    }
+    .notification {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 1;
+            padding: 10px;
+            border-radius: 5px;
+            top: 30px;
+        }
+
+        .dropdown a {
+            color: black;
+            padding: 8px 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        .dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .notification:hover .dropdown {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -208,80 +371,216 @@
                     <p id="current-date-time"></p>
                 </div>
                 <div class="header-right">
-                    <button class="notification-btn">🔔</button>
-                    <input type="text" placeholder="Search here" class="search-bar">
-                </div>
+    <button id="notificationButton" class="notification-button">
+        🔔
+        <span id="notificationCount" class="notification-count" style="display: none;"></span>
+    </button>
+    <div id="notification-container" style="display: none;">
+        <h3>Notifications</h3>
+        <ul id="notificationsList"></ul>
+    </div>
+    <input type="text" placeholder="Search here" class="search-bar">
+</div>
+                <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const upcomingBills = {{ upcoming_bills | tojson }};
+        const achievedGoals = {{ achieved_goals | tojson }};
+        const notificationButton = document.getElementById("notificationButton");
+        const notificationCount = document.getElementById("notificationCount");
+        const notificationContainer = document.getElementById("notification-container");
+        const notificationsList = document.getElementById("notificationsList");
+
+        const notifications = [];
+
+        // Add upcoming bills to notifications
+        upcomingBills.forEach(bill => {
+            notifications.push(`${bill.name} is due on ${bill.due_date}`);
+        });
+
+        // Add achieved goals to notifications
+        achievedGoals.forEach(goal => {
+            notifications.push(`Goal "${goal}" has been achieved!`);
+        });
+
+        if (notifications.length > 0) {
+            notificationCount.style.display = "inline-block";
+            notificationCount.textContent = notifications.length;
+
+            notificationButton.addEventListener("click", () => {
+                notificationContainer.style.display =
+                    notificationContainer.style.display === "block" ? "none" : "block";
+            });
+
+            notifications.forEach(notification => {
+                const li = document.createElement("li");
+                li.textContent = notification;
+                notificationsList.appendChild(li);
+            });
+        }
+    });
+</script>
             </div>
             <div class="content">
                 <div class="dashboard-grid">
                     <div class="dashboard-card">
                         <h3>Total Balance</h3>
                         <p id="total-balance">Loading...</p>
-    </div>
-    <script>
-        // Retrieve the total balance stored in localStorage
-        const totalBalance = localStorage.getItem("totalBalance");
+                    </div>
+                    <script>
+                        // Retrieve the total balance stored in localStorage
+                        const totalBalance = localStorage.getItem("totalBalance");
 
-        // Display the total balance in the dashboard card
-        document.getElementById("total-balance").textContent = totalBalance
-            ? `Rs.${parseFloat(totalBalance).toFixed(2)}`
-            : "No balance available";
-    </script>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>Expense Breakdown</h3>
-                        <p>Placeholder for Expense Breakdown</p>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>Upcoming Bills</h3>
-                        <p>Placeholder for Upcoming Bills</p>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>Recent Transactions</h3>
-                        <table id="transaction-list">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Transactions will be loaded dynamically -->
-            </tbody>
-        </table>
-    </div>
+                        // Display the total balance in the dashboard card
+                        document.getElementById("total-balance").textContent = totalBalance
+                            ? `Rs.${parseFloat(totalBalance).toFixed(2)}`
+                            : "No balance available";
+                    </script>
+                <div class="dashboard-card horizontal-card">
+                    <h3>Expense Breakdown</h3>
+                    <canvas id="expenseChart" width="400" height="200"></canvas>
+                    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("expenseChart").getContext("2d");
 
-    <script>
-        // Retrieve the transaction list from localStorage
-        const transactions = JSON.parse(localStorage.getItem("recentTransactions")) || [];
+        // Data passed from the backend
+        const categories = JSON.parse('{{ categories | tojson }}');
+        const amounts = JSON.parse('{{ amounts | tojson }}');
 
-        // Populate the transaction table
-        const tbody = document.getElementById("transaction-list").querySelector("tbody");
+        // Dynamically generate colors for the chart
+        const colors = categories.map((_, i) => `hsl(${(i * 360) / categories.length}, 70%, 60%)`);
 
-        if (transactions.length > 0) {
-            transactions.forEach((transaction) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${transaction.date}</td>
-                    <td>${transaction.description}</td>
-                    <td>${transaction.amount}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        } else {
-            tbody.innerHTML = '<tr><td colspan="3">No recent transactions available</td></tr>';
-        }
-    </script>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>Monthly Bar Graph</h3>
-                        <p>Placeholder for Monthly Bar Graph</p>
-                    </div>
+        // Create the chart
+        new Chart(ctx, {
+            type: 'pie', // Change to 'bar' for a bar chart
+            data: {
+                labels: categories,
+                datasets: [{
+                    data: amounts,
+                    backgroundColor: colors,
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `${context.label}: Rs.${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
                 </div>
+
+                    <div class="dashboard-card">
+                        <div class="card">
+                        <h3>Upcoming Bills</h3>
+                        <ul>
+        {% if upcoming_bills %}
+            {% for bill in upcoming_bills %}
+                <li>
+                    <strong>{{ bill.name }}</strong><br>
+                    Due: {{ bill.due_date }}<br>
+                    Amount: Rs.{{ bill.amount }}
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No upcoming bills</li>
+        {% endif %}
+    </ul>
+                    </div>
+                        </div>
+                    <div class="dashboard-card horizontal-card">
+                        <h3>Recent Transactions</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if recent_transactions %}
+                {% for transaction in recent_transactions %}
+                    <tr>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.type }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" style="text-align:center;">No recent transactions.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+<script>
+    // Function to fetch and display the last 5 transactions
+    function loadRecentTransactions() {
+        fetch("/recent_transactions")
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById("recentTransactionsTableBody");
+                tableBody.innerHTML = ""; // Clear the table
+
+                if (data.length > 0) {
+                    data.forEach(transaction => {
+                        const row = document.createElement("tr");
+
+                        const dateCell = document.createElement("td");
+                        dateCell.textContent = transaction.date;
+                        row.appendChild(dateCell);
+
+                        const descCell = document.createElement("td");
+                        descCell.textContent = transaction.description;
+                        row.appendChild(descCell);
+
+                        const amountCell = document.createElement("td");
+                        amountCell.textContent = transaction.amount;
+                        row.appendChild(amountCell);
+
+                        const typeCell = document.createElement("td");
+                        typeCell.textContent = transaction.type;
+                        row.appendChild(typeCell);
+
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement("tr");
+                    const cell = document.createElement("td");
+                    cell.colSpan = 4;
+                    cell.textContent = "No recent transactions.";
+                    cell.style.textAlign = "center";
+                    row.appendChild(cell);
+                    tableBody.appendChild(row);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching recent transactions:", error);
+            });
+    }
+
+    // Load recent transactions when the page is loaded
+    document.addEventListener("DOMContentLoaded", loadRecentTransactions);
+</script>
+
+                    </div>
             </div>
-        </div>
-    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Display current date and time
@@ -306,5 +605,6 @@
             setInterval(updateDateTime, 1000);
         });
     </script>
+
 </body>
 </html>

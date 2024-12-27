@@ -196,7 +196,8 @@ form select:focus {
 </div>
     <div class="content">
         <h2>List of Transactions</h2>
-        <table>
+        <table border="1">
+            <thead>
             <tr>
                 <th>Account Name</th>
                 <th>Amount</th>
@@ -204,9 +205,10 @@ form select:focus {
                 <th>Category</th>
                 <th>Date</th>
             </tr>
+            </thead>
             {% for transaction in transactions %}
             <tr>
-                <td>{{ transaction.account }}</td>
+                <td>{{ transaction.account_name }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td>{{ transaction.type }}</td>
                 <td>{{ transaction.category }}</td>
@@ -215,13 +217,13 @@ form select:focus {
             {% endfor %}
         </table>
         <h1>Add New Transaction</h1>
-<form method="POST" action="/add_transaction">
+<form action="/add_transaction" method="POST">
     <label for="account">Account:</label>
-    <select id="account" name="account" required>
-        {% for account in accounts %}
-        <option value="{{ account.name }}">{{ account.name }}</option>
-        {% endfor %}
-    </select>
+    <select id="account" name="account_id" required> <!-- Corrected from 'account' -->
+            {% for account in accounts %}
+            <option value="{{ account.id }}">{{ account.name }}</option> <!-- Corrected account reference -->
+            {% endfor %}
+        </select>
 
     <label for="amount">Amount:</label>
     <input type="number" id="amount" step="0.01" name="amount" placeholder="Enter amount" required>
@@ -250,23 +252,120 @@ form select:focus {
 
     <button type="submit">Add Transaction</button>
 </form>
-
     </div>
     <script>
-        // Extract transaction data from the table
-        const rows = document.querySelectorAll("table tbody tr");
-        const transactions = [];
+        const form = document.querySelector("#transactionForm");
 
-        rows.forEach((row) => {
-            const date = row.querySelector("td:nth-child(5)").textContent.trim(); // Date
-    const description = row.querySelector("td:nth-child(4)").textContent.trim(); // Category
-    const amount = row.querySelector("td:nth-child(2)").textContent.trim(); // Amount
+    form.addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting the usual way
 
-    transactions.push({ date, description, amount });
-        });
+        // Collect the form data
+        const account_id = document.querySelector('#account').value;
+        const amount = document.querySelector('#amount').value;
+        const type = document.querySelector('#type').value;
+        const category = document.querySelector('#category').value;
+        const date = document.querySelector('#date').value;
 
-        // Store the transaction list in localStorage
+        // Create a new transaction object
+        const newTransaction = {
+            account_id,
+            amount,
+            type,
+            category,
+            date
+        };
+
+        // Add the new transaction to the table dynamically
+        const table = document.querySelector("#transactionsTable tbody");
+        const newRow = table.insertRow();
+
+        newRow.innerHTML = `
+            <td>${account_id}</td>
+            <td>${amount}</td>
+            <td>${type}</td>
+            <td>${category}</td>
+            <td>${date}</td>
+        `;
+
+        // Optionally, reset the form
+        form.reset();
+
+        // Optionally, you can store the transaction in localStorage or send it to the server
+        saveTransaction(newTransaction);
+    });
+
+    // Function to save transaction to localStorage
+    function saveTransaction(transaction) {
+        const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+        transactions.push(transaction);
+        localStorage.setItem("transactions", JSON.stringify(transactions));
+    }
+
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting the usual way
+
+        // Collect the form data
+        const account_id = document.querySelector('#account').value;
+        const amount = document.querySelector('#amount').value;
+        const type = document.querySelector('#type').value;
+        const category = document.querySelector('#category').value;
+        const date = document.querySelector('#date').value;
+
+        // Create a new transaction object
+        const newTransaction = {
+            account_id,
+            amount,
+            type,
+            category,
+            date
+        };
+
+        // Save the new transaction to localStorage
+        saveTransaction(newTransaction);
+
+        // Optionally, you can update the UI here or reset the form
+        alert("Transaction saved!");
+        form.reset(); // Reset the form fields
+    });
+
+    // Save transaction to localStorage
+    function saveTransaction(transaction) {
+        // Get the existing transactions from localStorage, or initialize an empty array if none exist
+        const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+        // Add the new transaction to the array
+        transactions.push(transaction);
+
+        // Store the updated transactions array back in localStorage
+        localStorage.setItem("transactions", JSON.stringify(transactions));
+    }
+
+    // Extract transaction data from the table
+    const rows = document.querySelectorAll("table tbody tr");
+    const transactions = [];
+
+    rows.forEach((row) => {
+        const account_name = row.querySelector("td:nth-child(1)")?.textContent.trim(); // Account Name
+        const amount = row.querySelector("td:nth-child(2)")?.textContent.trim(); // Amount
+        const type = row.querySelector("td:nth-child(3)")?.textContent.trim(); // Type
+        const category = row.querySelector("td:nth-child(4)")?.textContent.trim(); // Category
+        const date = row.querySelector("td:nth-child(5)")?.textContent.trim(); // Date
+
+        if (account_name && amount && type && category && date) {
+            transactions.push({ account_name, amount, type, category, date });
+        }
+    });
+
+    if (transactions.length > 0) {
         localStorage.setItem("recentTransactions", JSON.stringify(transactions));
-    </script>
+    }
+
+    // Log if there are no transactions
+    if (transactions.length === 0) {
+        console.log("No transactions found.");
+    }
+</script>
 </body>
 </html>

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-    /* General body styling */
-    body {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+      body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -98,7 +98,7 @@
 
     /* Table styling */
     table {
-        width: 90%;
+        width: 50%;
         max-width: 800px;
         margin: 20px auto;
         border-collapse: collapse;
@@ -115,7 +115,7 @@
 
     table thead th {
         padding: 10px 20px;
-        text-align: left;
+        text-align: center;
     }
 
     table tbody tr:nth-child(even) {
@@ -128,15 +128,16 @@
 
     table tbody td {
         padding: 10px 20px;
-        text-align: left;
+        text-align: center;
     }
 
     table tbody td:first-child {
         font-weight: bold;
+        text-align: center;
     }
 
     table tbody td:last-child {
-        text-align: right;
+        text-align: center;
     }
 
     /* Responsive adjustments */
@@ -173,7 +174,7 @@
         }
     }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
 <div class="sidebar">
@@ -189,7 +190,7 @@
         </div>
     <h1>Expense Management</h1>
 
-    <h2>Credits vs Debits (Last 12 Months)</h2>
+    <h2>Credits vs Debits</h2>
     <canvas id="expenseChart" width="400" height="200"></canvas>
 
     <h2>Expense Breakdown by Category</h2>
@@ -197,17 +198,17 @@
         <thead>
             <tr>
                 <th>Category</th>
-                <th>Amount ($)</th>
+                <th>Amount (Rs)</th>
             </tr>
         </thead>
         <tbody>
-            {% for category, amount in category_totals.items() %}
-            <tr>
-                <td>{{ category }}</td>
-                <td>{{ amount }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        {% for category in category_totals %}
+        <tr>
+            <td>{{ category.category }}</td>
+            <td>{{ category.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
     </table>
 
     <script>
@@ -218,7 +219,7 @@
             data: {
                 labels: ['Credits', 'Debits'],
                 datasets: [{
-                    label: 'Amount ($)',
+                    label: 'Amount (Rs)',
                     data: [{{ credit_total }}, {{ debit_total }}],
                     backgroundColor: ['#4CAF50', '#F44336']
                 }]

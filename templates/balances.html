@@ -292,9 +292,10 @@
         const balance = parseFloat(balanceCell.textContent || 0);
         totalBalance += balance;
     });
+     // Store the computed total balance in localStorage
+    localStorage.setItem('totalBalance', totalBalance);
 
-        // Store the computed total balance in localStorage
-        localStorage.setItem("totalBalance", totalBalance);
+
 </script>
 </body>
 </html>
