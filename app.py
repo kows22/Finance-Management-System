@@ -398,5 +398,10 @@ def goals():
 
     return render_template('goals.html', goals=goals, notifications=achieved_goals)
 
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)
