@@ -15,23 +15,85 @@
         <div id="signup-form" class="form-box">
             <h2>Sign Up</h2>
             <form action="/signup" method="POST">
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" id="signup-name" name="name" placeholder="Name" required>
+                <input type="email" id="signup-email" name="email" placeholder="Email" required>
+                <input type="password" id="signup-password" name="password" placeholder="Password" required>
                 <button type="submit">Sign Up</button>
             </form>
         </div>
 
-        <div id="signin-form" class="form-box" onsubmit="return validateForm()">
+        <div id="signin-form" class="form-box">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
             <h2>Sign In</h2>
-            <form action="/signin" method="POST">
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
+            <form action="/signin" method="POST" onsubmit="return validateForm()">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter your password" required>
                 <button type="submit">Sign In</button>
             </form>
+
         </div>
     </div>
     <script>
+        // Show the selected form
+        function showForm(formId) {
+            const forms = document.querySelectorAll('.form-box');
+            forms.forEach(form => form.classList.remove('visible')); // Hide all forms
+
+            const selectedForm = document.getElementById(formId);
+            selectedForm.classList.add('visible'); // Show the selected form
+        }
+
+        // Validate the Sign-Up form
+        document.getElementById('signup-form-element').onsubmit = function(event) {
+            const nameField = document.getElementById('signup-name');
+            const emailField = document.getElementById('signup-email');
+            const passwordField = document.getElementById('signup-password');
+
+            let errorMessage = '';
+            if (nameField.value.trim().length < 3) errorMessage += 'Name must be at least 3 characters.\n';
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim())) errorMessage += 'Enter a valid email.\n';
+            if (passwordField.value.trim().length < 6) errorMessage += 'Password must be at least 6 characters.\n';
+
+            if (errorMessage) {
+                alert(errorMessage);
+                event.preventDefault();
+            }
+        };
+
+        // Validate the Sign-In form
+        document.querySelector('#signin-form form').onsubmit = async function(event) {
+            event.preventDefault(); // Prevent default submission
+
+            const email = document.getElementById('signin-email').value.trim();
+            const password = document.getElementById('signin-password').value.trim();
+
+            try {
+                const response = await fetch('/signin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert(result.message);
+                    window.location.href = '/home'; // Redirect to the home page
+                } else {
+                    alert(result.message); // Display error message
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        };
+
         function validateForm() {
         const email = document.getElementById('email').value;
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -47,42 +109,6 @@
         }
 
         return true;
-        }
-
-        function showForm(formId) {
-            const forms = document.querySelectorAll('.form-box');
-            forms.forEach(form => form.classList.remove('visible'));
-
-            // Show the selected form
-            const selectedForm = document.getElementById(formId);
-            selectedForm.classList.add('visible');
-        }
-        async function submitCardForm(event) {
-            event.preventDefault();
-
-            const form = document.getElementById('payment-card-form');
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('/add_card', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                const result = await response.json();
-                if (response.ok) {
-                    alert('Card successfully added: ' + JSON.stringify(result));
-                } else {
-                    alert('Error: ' + JSON.stringify(result));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An unexpected error occurred.');
-            }
         }
     </script>
 </body>

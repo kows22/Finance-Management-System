@@ -5,7 +5,6 @@ import mysql.connector
 import bcrypt
 import os
 
-
 app = Flask(__name__)
 
 # MySQL configuration
@@ -18,6 +17,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 app.secret_key = os.urandom(24)
+
 data = {
     "accounts": [
         {"name": "", "card_number": "", "balance": ""},
@@ -131,10 +131,10 @@ def signin():
         cur.close()
 
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-            # Successful login
             session['user_id'] = user['id']
             session['name'] = user['name']
-            return redirect('/home')
+            print(f"User logged in: {session['name']} (ID: {session['user_id']})")  # Debugging
+            return redirect('/home')  # Redirect to home page
         else:
             flash('Invalid email or password!', 'error')
             return redirect('/')
