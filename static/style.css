@@ -1,4 +1,4 @@
-/* General Reset and Body Styling */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,10 +12,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    background: linear-gradient(to right, #82CAFF, #95CADB);
 }
 
-/* Main Container Styling */
 .main-container {
     text-align: center;
     width: 100%;
@@ -40,7 +39,6 @@ body {
     margin-bottom: 25px;
 }
 
-/* Button Styling */
 button {
     padding: 12px 20px;
     font-size: 16px;
@@ -68,7 +66,6 @@ button:active {
     transform: translateY(1px);
 }
 
-/* Button Hover Animation */
 button::before {
     content: '';
     position: absolute;
@@ -85,7 +82,6 @@ button:hover::before {
     left: 100%;
 }
 
-/* Form Box Styling */
 .form-container {
     display: flex;
     flex-direction: column;
@@ -94,7 +90,7 @@ button:hover::before {
 }
 
 .form-box {
-    display: none; /* Default hidden */
+    display: none;
     margin-top: 20px;
     padding: 20px 30px;
     width: 100%;
@@ -142,13 +138,11 @@ button {
     width: 100%;
 }
 
-/* Placeholder Styling */
 input::placeholder {
     color: #aaa;
     font-style: italic;
 }
 
-/* Mobile Friendly Design */
 @media (max-width: 600px) {
     .main-container {
         padding: 20px;
@@ -168,7 +162,6 @@ input::placeholder {
     }
 }
 
-/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -180,7 +173,6 @@ input::placeholder {
     }
 }
 
-/* Main Content Styling */
 .main-content {
     flex: 1;
     padding: 400px;
@@ -216,7 +208,7 @@ input::placeholder {
 .main-content .header button:hover {
     background-color: #283593;
 }
-/* Make everything responsive */
+
 @media (max-width: 768px) {
     .sidebar {
         position: static;
