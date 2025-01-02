@@ -1,0 +1,28 @@
+{
+    "bills": [
+        {
+            "name": "EB",
+            "amount": 1000.0,
+            "due_date": "2024-12-26",
+            "status": "Unpaid"
+        },
+        {
+            "name": "Loan",
+            "amount": 2000.0,
+            "due_date": "2024-12-28",
+            "status": "Paid"
+        },
+        {
+            "name": "Monthly due",
+            "amount": 1000.0,
+            "due_date": "2024-12-31",
+            "status": "Unpaid"
+        },
+        {
+            "name": "Loan2",
+            "amount": 1000.0,
+            "due_date": "2024-12-30",
+            "status": "Unpaid"
+        }
+    ]
+}
